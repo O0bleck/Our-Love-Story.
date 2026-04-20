@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Our Love Story ❤️</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@400;600&family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet">
+
+<style>
+/* ── RESET ── */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+:root {
+  --pink:       #ff4d6d;
+  --pink-light: #ff758c;
+  --pink-pale:  #f5c0cc;
+  --bg-top:     #3b1020;
+  --bg-mid:     #2a0c18;
+  --bg-low:     #1e0812;
+  --bg-bot:     #160409;
+}
+
+/* FIX: overflow-x on html too — fixes position:fixed glitch on iOS Safari */
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  color: #fff;
+  overflow-x: hidden;
+  background: var(--bg-bot);
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  padding-left:  env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(180deg,
+    var(--bg-top) 0%,
+    var(--bg-mid) 30%,
+    var(--bg-low) 60%,
+    var(--bg-bot) 100%);
+  z-index: -1;
+  pointer-events: none;
+}
+
+button, .pin { -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+
+/* ── LOCK SCREEN ── */
+#lock {
+  position: fixed;
+  inset: 0;
+  background: url("background.jpg") center/cover no-repeat;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 6px;
+  z-index: 9999;
+  padding: 20px;
+  padding-top:    calc(20px + env(safe-area-inset-top));
+  padding-bottom: calc(20px + env(safe-area-inset-bottom));
+}
+#lock::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+}
+#lock * { z-index: 2; }
+#lock h2 {
+  font-family: 'Great Vibes';
+  font-size: clamp(1.8rem, 6vw, 2.5rem);
+  color: var(--pink-light);
+  text-shadow: 0 2px 10px rgba(255,77,109,0.5);
+  text-align: center;
+}
+.input-box input {
+  padding: 14px 20px;
+  border-radius: 25px;
+  border: none;
+  width: min(240px, 80vw);
+  text-align: center;
+  background: rgba(255,255,255,0.2);
+  color: #fff;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  margin-top: 15px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 1rem;
+  outline: none;
+}
+.input-box input::placeholder { color: rgba(255,255,255,0.6); }
+
+/* ── SHARED BUTTON ── */
+button {
+  min-height: 44px;
+  margin-top: 15px;
+  padding: 12px 28px;
+  border: none;
+  border-radius: 25px;
+  background: linear-gradient(135deg, var(--pink), #ff1f4b);
+  color: #fff;
+  cursor: pointer;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: clamp(0.85rem, 3vw, 1rem);
+  transition: transform 0.15s;
+  -webkit-appearance: none;
+}
+button:hover  { transform: scale(1.05); }
+button:active { transform: scale(0.97); }
+
+/* ── HERO SECTION ── */
+#hero {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  background: transparent;
+  padding: 20px;
+  padding-top: calc(20px + env(safe-area-inset-top));
+}
+.memory-box {
+  position: relative;
+  width: min(90%, 700px);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 0 60px rgba(255,77,109,0.25);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.memory-box > img.collage {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(
+    to bottom,
+    rgba(0,0,0,0.10) 0%,
+    rgba(0,0,0,0.45) 60%,
+    rgba(0,0,0,0.65) 100%
+  );
+  padding: clamp(16px, 4vw, 36px);
+}
+.overlay h1 {
+  font-family: 'Great Vibes';
+  font-size: clamp(2rem, 7vw, 3.2rem);
+  color: var(--pink-light);
+  text-shadow: 0 0 20px rgba(255,77,109,0.6);
+}
+.overlay p {
+  margin-top: 10px;
+  color: #ffc0cb;
+  font-size: clamp(0.85rem, 3vw, 1rem);
+}
+.overlay button { margin-top: 20px; }
+
+/* ── TIME SECTION ── */
+#timeSection {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: transparent;
+  position: relative;
+  z-index: 1;
+  padding: 50px 20px;
+  gap: 0;
+}
+#timeSection h2 {
+  font-family: 'Great Vibes';
+  font-size: clamp(2rem, 7vw, 2.8rem);
+  color: var(--pink-light);
+  text-shadow: 0 0 20px rgba(255,77,109,0.4);
+  letter-spacing: 0.5px;
+  text-align: center;
+}
+#counter {
+  margin-top: 18px;
+  font-size: clamp(1rem, 4vw, 1.4rem);
+  color: var(--pink-pale);
+  letter-spacing: 0.05em;
+  text-align: center;
+}
+#timeText {
+  opacity: 0;
+  transition: opacity 1.6s ease 0.4s;
+  margin-top: 28px;
+  font-size: clamp(0.85rem, 3vw, 0.97rem);
+  color: #f0b8c6;
+  line-height: 1.85;
+  text-align: center;
+  width: 100%;
+  padding: 0 16px;
+}
+#timeText.visible { opacity: 1; }
+
+/* ── JOURNEY SECTION ── */
+#journeySection {
+  position: relative;
+  height: 2200px;
+  background: transparent;
+  display: none;
+  z-index: 1;
+}
+#journeyTitle {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  text-align: center;
+  padding: 16px 10px;
+  font-family: 'Great Vibes';
+  font-size: clamp(1.8rem, 6vw, 2.8rem);
+  color: var(--pink-light);
+  text-shadow: 0 0 20px rgba(255,77,109,0.4);
+  letter-spacing: 0.5px;
+  background: linear-gradient(to bottom, rgba(59,16,32,0.95), transparent);
+  z-index: 10;
+  pointer-events: none;
+}
+
+/* ── JOURNEY PANEL ── */
+#journeyPanel {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  max-width: 1000px;
+  height: clamp(300px, 60vh, 600px);
+  display: none;
+  z-index: 100;
+  pointer-events: none;
+}
+@media (max-width: 600px) {
+  #journeyPanel { height: clamp(260px, 55vw, 360px); }
+}
+#journeyPanel .road,
+#journeyPanel #scooter { pointer-events: none; }
+#journeyPanel .pin     { pointer-events: auto; }
+
+.road { width: 100%; height: 100%; display: block; }
+.road path:first-child {
+  stroke: #ff6b85;
+  stroke-width: 6;
+  stroke-dasharray: 14 8;
+  fill: none;
+}
+.road path:last-child {
+  stroke: var(--pink);
+  stroke-width: 3;
+  opacity: 0.45;
+  fill: none;
+}
+
+#scooter {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  z-index: 5;
+}
+#scooter img {
+  width: clamp(70px, 13vw, 130px);
+  display: block;
+}
+
+.pin {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  z-index: 6;
+  padding: 8px;
+}
+.pin img {
+  width: clamp(20px, 4vw, 28px);
+  filter: drop-shadow(0 0 6px var(--pink));
+  transition: transform 0.2s;
+  display: block;
+}
+.pin:hover img, .pin:active img { transform: scale(1.25); }
+
+.pin::after {
+  content: '';
+  position: absolute;
+  width: 44px; height: 44px;
+  border: 2px solid #ff6b85;
+  border-radius: 50%;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  animation: pulse 2s infinite;
+  pointer-events: none;
+}
+@keyframes pulse {
+  0%   { transform: translate(-50%,-50%) scale(0.6); opacity: 1; }
+  100% { transform: translate(-50%,-50%) scale(2.5); opacity: 0; }
+}
+.label {
+  display: none;
+  position: absolute;
+  bottom: 130%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--pink);
+  color: #fff;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: clamp(10px, 2.5vw, 12px);
+  font-family: 'Playfair Display', serif;
+  white-space: nowrap;
+  box-shadow: 0 4px 15px rgba(255,77,109,0.4);
+  z-index: 20;
+  pointer-events: none;
+}
+.pin:hover .label, .pin.touched .label { display: block; }
+
+/* ── IMAGE LIGHTBOX ── */
+#imgModal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.92);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 5000;
+  padding: 20px;
+  padding-top:    calc(20px + env(safe-area-inset-top));
+  padding-bottom: calc(20px + env(safe-area-inset-bottom));
+}
+#imgModal.open { display: flex; }
+#imgModalInner {
+  position: relative;
+  max-width: 90vw;
+  max-height: 90dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+#imgModalImg {
+  max-width: 90vw;
+  max-height: 75dvh;
+  border-radius: 16px;
+  box-shadow: 0 0 50px rgba(255,77,109,0.35);
+  object-fit: contain;
+}
+#imgModalCaption {
+  font-family: 'Great Vibes';
+  font-size: clamp(1.2rem, 5vw, 1.6rem);
+  color: var(--pink-light);
+  text-shadow: 0 0 10px rgba(255,77,109,0.5);
+  text-align: center;
+}
+#imgModalClose {
+  position: absolute;
+  top: -14px; right: -14px;
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: var(--pink);
+  color: #fff;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0; margin: 0;
+}
+
+/* ── BUBU SECTION ── */
+#bubuSection {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: transparent;
+  position: relative;
+  z-index: 1;
+  gap: 28px;
+  padding: 60px 20px;
+}
+#bubuSection h2 {
+  font-family: 'Great Vibes';
+  font-size: clamp(2.2rem, 8vw, 3.2rem);
+  color: var(--pink-light);
+  text-shadow: 0 0 25px rgba(255,77,109,0.5);
+  letter-spacing: 1px;
+  text-align: center;
+}
+#spankBtn {
+  margin-top: 0;
+  padding: 14px 36px;
+  font-size: clamp(0.9rem, 3.5vw, 1rem);
+  letter-spacing: 0.04em;
+  border-radius: 30px;
+  animation: glowPulse 2.5s ease-in-out infinite;
+}
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 0 14px rgba(255,77,109,0.35); }
+  50%       { box-shadow: 0 0 32px rgba(255,77,109,0.75); }
+}
+
+/* ── QR SECTION ── */
+#qrSection {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 40vh;
+  background: transparent;
+  position: relative;
+  z-index: 1;
+  padding: 40px 20px 20px;
+}
+#qrSection img {
+  width: clamp(130px, 40vw, 151px);
+  height: clamp(130px, 40vw, 151px);
+  object-fit: contain;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(255,77,109,0.25);
+}
+
+/* ── THANK YOU SECTION ── */
+#thankSection {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+  background: transparent;
+  position: relative;
+  z-index: 1;
+  padding: 20px 24px calc(60px + env(safe-area-inset-bottom));
+  gap: 20px;
+  text-align: center;
+}
+#thankSection h2 {
+  font-family: 'Great Vibes';
+  font-size: clamp(2.2rem, 8vw, 3.4rem);
+  color: var(--pink-light);
+  text-shadow: 0 0 25px rgba(255,77,109,0.5);
+}
+#thankSection p {
+  font-size: clamp(0.88rem, 3vw, 1rem);
+  color: #f0b8c6;
+  line-height: 1.85;
+  max-width: 540px;
+}
+.thank-hearts {
+  font-size: clamp(1.4rem, 5vw, 2rem);
+  letter-spacing: 6px;
+  animation: heartbeat 1.6s ease-in-out infinite;
+}
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  14%       { transform: scale(1.18); }
+  28%       { transform: scale(1); }
+  42%       { transform: scale(1.12); }
+  70%       { transform: scale(1); }
+}
+
+/* ── FLOATING HEARTS ── */
+.floating-heart {
+  position: fixed;
+  bottom: -30px;
+  font-size: 22px;
+  animation: floatUp linear infinite;
+  pointer-events: none;
+  z-index: 50;
+  filter: grayscale(1) brightness(2.5) sepia(0.1);
+  opacity: 0.7;
+}
+@keyframes floatUp {
+  0%   { transform: translateY(0) rotate(-8deg); opacity: 0.8; }
+  50%  { transform: translateY(-60vh) rotate(8deg); opacity: 0.55; }
+  100% { transform: translateY(-120vh) rotate(-4deg); opacity: 0; }
+}
+.burst {
+  position: fixed;
+  font-size: 22px;
+  animation: burst 1s forwards;
+  pointer-events: none;
+  z-index: 9990;
+}
+@keyframes burst {
+  to { transform: translate(var(--x), var(--y)); opacity: 0; }
+}
+</style>
+</head>
+
+<body>
+
+<!-- LOCK SCREEN -->
+<div id="lock">
+  <h2>Enter Our Special Date</h2>
+  <div class="input-box">
+    <!-- FIX: inputmode="text" so hyphen key is available on mobile keyboards -->
+    <input type="password" id="pass" placeholder="YYYY-MM-DD"
+           inputmode="text"
+           onkeydown="if(event.key==='Enter') unlock()">
+  </div>
+  <button onclick="unlock()">Enter</button>
+</div>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="memory-box">
+    <img class="collage" src="background 2.jpg" alt="our memories">
+    <div class="overlay">
+      <h1>Happy 1 Year</h1>
+      <p>Every moment with you feels deeper than words...</p>
+      <button onclick="startSite()">Start</button>
+    </div>
+  </div>
+</section>
+
+<!-- 1. TIME SECTION -->
+<section id="timeSection">
+  <h2>Our Time Together</h2>
+  <div id="counter">Loading...</div>
+  <p id="timeText">
+    365 days and every single moment has been a piece of us. Not just the laughter,
+    but the silences, the lessons, the growth. Time didn't just pass... it shaped
+    something real between us. As we step into another year, I don't just want to
+    celebrate how long we've been together — I want to celebrate how deeply we've
+    chosen each other, again and again.
+  </p>
+</section>
+
+<!-- 2. JOURNEY SECTION -->
+<section id="journeySection">
+  <div id="journeyTitle">Our Journey Together</div>
+</section>
+
+<!-- JOURNEY PANEL -->
+<div id="journeyPanel">
+  <svg viewBox="0 0 1000 600" class="road" preserveAspectRatio="none">
+    <path id="svgPath"
+      d="M50,100 C300,50 700,50 900,150
+         S700,300 500,350
+         S200,450 900,500"/>
+    <path
+      d="M50,100 C300,50 700,50 900,150
+         S700,300 500,350
+         S200,450 900,500"/>
+  </svg>
+  <div id="scooter"><img src="scooter.png" alt="scooter"></div>
+  <div class="pin" data-pos="0.10" data-img="img1.jpg" data-caption="Initial Love">
+    <img src="https://cdn-icons-png.flaticon.com/512/684/684908.png" alt="pin">
+    <span class="label">Initial Love</span>
+  </div>
+  <div class="pin" data-pos="0.35" data-img="img2.jpg" data-caption="Building Connections">
+    <img src="https://cdn-icons-png.flaticon.com/512/684/684908.png" alt="pin">
+    <span class="label">Building Connections</span>
+  </div>
+  <div class="pin" data-pos="0.60" data-img="img3.jpg" data-caption="Conflicts">
+    <img src="https://cdn-icons-png.flaticon.com/512/684/684908.png" alt="pin">
+    <span class="label">Conflicts</span>
+  </div>
+  <div class="pin" data-pos="0.88" data-img="img4.jpg" data-caption="The Anniversary">
+    <img src="https://cdn-icons-png.flaticon.com/512/684/684908.png" alt="pin">
+    <span class="label">The Anniversary</span>
+  </div>
+</div>
+
+<!-- IMAGE LIGHTBOX -->
+<div id="imgModal" role="dialog" aria-modal="true">
+  <div id="imgModalInner">
+    <button id="imgModalClose" aria-label="Close">✕</button>
+    <img id="imgModalImg" src="" alt="memory">
+    <div id="imgModalCaption"></div>
+  </div>
+</div>
+
+<!-- 3. BUBU SECTION -->
+<section id="bubuSection">
+  <h2>Bubu just for you</h2>
+  <button id="spankBtn">spank me mommy</button>
+</section>
+
+<!-- 4. QR SECTION -->
+<section id="qrSection">
+  <img src="qr.jpeg" alt="QR Code">
+</section>
+
+<!-- 5. THANK YOU SECTION -->
+<section id="thankSection">
+  <h2>Thank You</h2>
+  <p>
+    Thank you for every laugh, every silence, every fight we survived, and every
+    moment we chose to stay. This isn't just a page it's a little piece of my
+    heart made just for you. Here's to us, to everything we've built, and to all
+    the beautiful moments still waiting ahead.
+  </p>
+  <div class="thank-hearts">❤️ 🤍 ❤️</div>
+</section>
+
+<audio id="music" src="music.mp3" loop></audio>
+
+<script>
+/* ─── CONFIG ─────────────────────────────────── */
+var START_DATE      = new Date(2025, 3, 19, 21, 17);
+var UNLOCK_PASSWORD = "2025-04-19";
+var BGM_FULL        = 1.0;
+var music           = document.getElementById("music");
+
+var JOURNEY_PINS = [
+  { img: "img1.jpg", caption: "Initial Love",         pos: 0.10 },
+  { img: "img2.jpg", caption: "Building Connections", pos: 0.35 },
+  { img: "img3.jpg", caption: "Conflicts",            pos: 0.60 },
+  { img: "img4.jpg", caption: "The Anniversary",      pos: 0.88 }
+];
+
+/* ─── TIMER ── */
+setInterval(function() {
+  var diff = Date.now() - START_DATE;
+  var d = Math.floor(diff / 86400000);
+  var h = Math.floor((diff / 3600000) % 24);
+  var m = Math.floor((diff / 60000)   % 60);
+  var s = Math.floor((diff / 1000)    % 60);
+  var el = document.getElementById("counter");
+  if (el) el.innerText = d + " days  " + h + " hrs  " + m + " mins  " + s + " sec";
+}, 1000);
+
+/* ─── UNLOCK ── */
+function unlock() {
+  var input = document.getElementById("pass");
+  if (!input) return;
+  if (input.value.trim() === UNLOCK_PASSWORD) {
+    document.getElementById("lock").style.display = "none";
+    music.volume = BGM_FULL;
+    music.play().catch(function() {});
+    burstHearts();
+    document.getElementById("hero").style.display = "flex";
+    startFloatingHearts();
+  } else {
+    alert("Wrong date — Hint: YYYY-MM-DD");
+  }
+}
+
+/* ─── START SITE ── */
+function startSite() {
+  var sections = [
+    { id: "timeSection",    disp: "flex"  },
+    { id: "journeySection", disp: "block" },
+    { id: "bubuSection",    disp: "flex"  },
+    { id: "qrSection",      disp: "flex"  },
+    { id: "thankSection",   disp: "flex"  }
+  ];
+  sections.forEach(function(s) {
+    var el = document.getElementById(s.id);
+    if (el) el.style.display = s.disp;
+  });
+
+  requestAnimationFrame(function() {
+    requestAnimationFrame(function() {
+      var tt = document.getElementById("timeText");
+      if (tt) tt.classList.add("visible");
+    });
+  });
+
+  initJourney();
+  var ts = document.getElementById("timeSection");
+  if (ts) ts.scrollIntoView({ behavior: "smooth" });
+}
+
+/* ─── APPLY PIN CONFIG ── */
+(function applyPinConfig() {
+  var pinEls = document.querySelectorAll(".pin");
+  JOURNEY_PINS.forEach(function(cfg, i) {
+    var el = pinEls[i];
+    if (!el) return;
+    el.dataset.img     = cfg.img;
+    el.dataset.caption = cfg.caption;
+    el.dataset.pos     = cfg.pos;
+    var label = el.querySelector(".label");
+    if (label) label.textContent = cfg.caption;
+  });
+})();
+
+/* ─── JOURNEY / SCOOTER ── */
+var svgPath = document.getElementById("svgPath");
+var scooter = document.getElementById("scooter");
+var pins    = document.querySelectorAll(".pin");
+var panel   = document.getElementById("journeyPanel");
+
+function placeEl(el, frac) {
+  var totalLen = svgPath.getTotalLength();
+  var pt       = svgPath.getPointAtLength(totalLen * frac);
+  el.style.left = (pt.x / 1000 * 100) + "%";
+  el.style.top  = (pt.y / 600  * 100) + "%";
+}
+
+function coordToPixel(pt) {
+  return {
+    x: (pt.x / 1000) * panel.offsetWidth,
+    y: (pt.y / 600)  * panel.offsetHeight
+  };
+}
+
+function initJourney() {
+  var wasDisplay = panel.style.display;
+  panel.style.visibility = "hidden";
+  panel.style.display    = "block";
+  pins.forEach(function(p) {
+    placeEl(p, parseFloat(p.dataset.pos));
+  });
+  updateScooter();
+  panel.style.display    = wasDisplay || "none";
+  panel.style.visibility = "";
+}
+
+function updateScooter() {
+  var js = document.getElementById("journeySection");
+  if (!js || js.style.display !== "block") {
+    panel.style.display = "none";
+    return;
+  }
+  var jsTop     = js.getBoundingClientRect().top + window.scrollY;
+  var jsScroll  = js.offsetHeight - window.innerHeight;
+  var scrolled  = window.scrollY - jsTop;
+  var inJourney = (scrolled >= 0 && scrolled <= jsScroll);
+  panel.style.display = inJourney ? "block" : "none";
+  if (!inJourney) return;
+  var frac     = Math.max(0, Math.min(1, scrolled / jsScroll));
+  var totalLen = svgPath.getTotalLength();
+  var len      = frac * totalLen;
+  var rawPt    = svgPath.getPointAtLength(len);
+  var rawNext  = svgPath.getPointAtLength(Math.min(len + 2, totalLen));
+  var px       = coordToPixel(rawPt);
+  var pxNx     = coordToPixel(rawNext);
+  scooter.style.left = (rawPt.x / 1000 * 100) + "%";
+  scooter.style.top  = (rawPt.y / 600  * 100) + "%";
+  var angle = Math.atan2(pxNx.y - px.y, pxNx.x - px.x) * 180 / Math.PI;
+  scooter.style.transform = "translate(-50%,-50%) rotate(" + angle + "deg)";
+}
+
+window.addEventListener("scroll", updateScooter, { passive: true });
+window.addEventListener("resize", function() {
+  var js = document.getElementById("journeySection");
+  if (js && js.style.display === "block") {
+    pins.forEach(function(p) { placeEl(p, parseFloat(p.dataset.pos)); });
+    updateScooter();
+  }
+}, { passive: true });
+
+/* ── PIN TOUCH LABELS ── */
+pins.forEach(function(pin) {
+  pin.addEventListener("touchstart", function() {
+    pins.forEach(function(p) { p.classList.remove("touched"); });
+    pin.classList.add("touched");
+  }, { passive: true });
+});
+document.addEventListener("touchstart", function(e) {
+  var arr = Array.prototype.slice.call(pins);
+  if (!arr.some(function(p) { return p.contains(e.target); })) {
+    arr.forEach(function(p) { p.classList.remove("touched"); });
+  }
+}, { passive: true });
+
+/* ── IMAGE LIGHTBOX ── */
+var imgModal        = document.getElementById("imgModal");
+var imgModalImg     = document.getElementById("imgModalImg");
+var imgModalCaption = document.getElementById("imgModalCaption");
+
+function openMemoryImg(src, caption) {
+  imgModalImg.src              = src;
+  imgModalCaption.textContent  = caption;
+  imgModal.classList.add("open");
+  document.body.style.overflow = "hidden";
+}
+function closeMemoryImg() {
+  imgModal.classList.remove("open");
+  imgModalImg.src              = "";
+  document.body.style.overflow = "";
+}
+
+pins.forEach(function(pin) {
+  pin.addEventListener("click", function() {
+    openMemoryImg(pin.dataset.img, pin.dataset.caption);
+  });
+});
+document.getElementById("imgModalClose").addEventListener("click", closeMemoryImg);
+imgModal.addEventListener("click", function(e) {
+  if (e.target === imgModal) closeMemoryImg();
+});
+
+/* ── BUBU BUTTON → GOOGLE PHOTOS ── */
+document.getElementById("spankBtn").addEventListener("click", function() {
+  window.open("https://photos.app.goo.gl/zjCvA9HjQ8aSWoeJ9", "_blank");
+});
+
+/* ── ESCAPE KEY ── */
+document.addEventListener("keydown", function(e) {
+  if (e.key === "Escape") closeMemoryImg();
+});
+
+/* ── BURST HEARTS ── */
+function burstHearts() {
+  for (var i = 0; i < 28; i++) {
+    (function() {
+      var h = document.createElement("div");
+      h.className = "burst";
+      h.innerHTML = "&#10084;&#65039;";
+      h.style.left = "50%";
+      h.style.top  = "50%";
+      h.style.setProperty("--x", (Math.random() * 500 - 250) + "px");
+      h.style.setProperty("--y", (Math.random() * 500 - 250) + "px");
+      document.body.appendChild(h);
+      setTimeout(function() { h.remove(); }, 1000);
+    })();
+  }
+}
+
+/* ── FLOATING HEARTS ── */
+function startFloatingHearts() {
+  setInterval(function() {
+    var h = document.createElement("div");
+    h.className = "floating-heart";
+    h.innerHTML = "&#129293;";
+    h.style.left = (Math.random() * 100) + "vw";
+    h.style.animationDuration = (6 + Math.random() * 4) + "s";
+    document.body.appendChild(h);
+    setTimeout(function() { h.remove(); }, 10000);
+  }, 700);
+}
+</script>
+
+</body>
+</html>
